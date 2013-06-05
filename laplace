@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<math.h>
+
+int main()
+{ 
+  
+  double B,L,T,R;
+  double u[15][15][10000];
+  int i,j,k;
+
+
+  FILE *fp;
+  fp=fopen("cfd result.txt","w");
+   
+ 
+  
+  
+  printf("Enter the top bottom left and right Boundary value");
+  scanf("%lf %lf %lf %lf",&T,&B,&L,&R);
+  
+
+
+ for(i=0;i<15;i++)
+  for(j=0;j<15;j++)
+    u[i][j][0]=0;
+  
+
+
+  
+for(k=1;k<1000;k++) 
+  for(j=0;j<15;j++)
+    for(i=0;i<15;i++)
+        { if(i==0&&j==0)
+          u[i][j][k]=(u[i+1][j][k-1]+u[i][j+1][k-1]+2*B+2*L)/6;
+         else if(i==0&&j==14)
+          u[i][j][k]=(u[i+1][j][k-1]+u[i][j-1][k-1]+2*T+2*L)/6;
+         else if(i==14&&j==14)
+          u[i][j][k]=(u[i-1][j][k-1]+u[i][j-1][k-1]+2*T+2*R)/6;
+         else if(i==14&&j==0)
+          u[i][j][k]=(u[i-1][j][k-1]+u[i][j+1][k-1]+2*R+2*B)/6;
+         else if(i==0)
+          u[i][j][k]=(u[i+1][j][k-1]+u[i][j+1][k-1]+u[i][j-1][k-1]+2*L)/5;
+         else if(i==14)
+          u[i][j][k]=(u[i-1][j][k-1]+u[i][j+1][k-1]+u[i][j-1][k-1]+2*R)/5;
+         else if(j==0)
+          u[i][j][k]=(u[i+1][j][k-1]+u[i][j+1][k-1]+u[i-1][j][k-1]+2*B)/5;
+         else if(j==14)
+          u[i][j][k]=(u[i+1][j][k-1]+u[i-1][j][k-1]+u[i][j-1][k-1]+2*T)/5;
+         else
+          u[i][j][k]=(u[i+1][j][k-1]+u[i][j+1][k-1]+u[i][j-1][k-1]+u[i-1][j][k-1])/4;
+         }
+
+
+for(j=0;j<15;j++)
+  { for(i=0;i<15;i++)
+   {
+     fprintf(fp,"%lf  ",u[i][j][k-1]);
+   }
+    fprintf(fp,"\n");
+  }
+return 0; 
+}
+
+
+
+
+
+
+	  
+  
